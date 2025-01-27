@@ -1,0 +1,26 @@
+{
+  "canisters": {
+    "dsk_chatbot_backend": {
+      "main": "src/dsk_chatbot_backend/main.mo",
+      "type": "motoko"
+    },
+    "dsk_chatbot_frontend": {
+      "dependencies": [
+        "dsk_chatbot_backend"
+      ],
+      "source": [
+        "src/dsk_chatbot_frontend/dist"
+      ],
+      "type": "assets",
+      "workspace": "dsk_chatbot_frontend"
+    }
+  },
+  "defaults": {
+    "build": {
+      "args": "",
+      "packtool": ""
+    }
+  },
+  "output_env_file": ".env",
+  "version": 1
+}
