@@ -2,25 +2,43 @@
   "canisters": {
     "dsk_chatbot_backend": {
       "main": "src/dsk_chatbot_backend/main.mo",
-      "type": "motoko"
+      "type": "motoko",
+      "output": "src/dsk_chatbot_backend/output",
+      "permissions": ["allow_outbound_http_requests"]
     },
     "dsk_chatbot_frontend": {
       "dependencies": [
         "dsk_chatbot_backend"
       ],
+      "frontend": {
+        "entrypoint": "src/dsk_chatbot_frontend/src/index.html"
+      },
       "source": [
         "src/dsk_chatbot_frontend/dist"
       ],
-      "type": "assets",
-      "workspace": "dsk_chatbot_frontend"
+      "type": "assets"
     }
   },
   "defaults": {
     "build": {
       "args": "",
-      "packtool": ""
+      "packtool": "mops sources"
     }
   },
-  "output_env_file": ".env",
+  "networks": {
+    "local": {
+      "bind": "127.0.0.1:8000",
+      "type": "ephemeral"
+    },
+    "ic": {
+      "providers": [
+        "https://ic0.app"
+      ],
+      "type": "persistent",
+      "http_outcalls_whitelist": [
+        "https://api-inference.huggingface.co"
+      ]
+    }
+  },
   "version": 1
 }

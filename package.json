@@ -14,5 +14,9 @@
   "type": "module",
   "workspaces": [
     "src/dsk_chatbot_frontend"
-  ]
+  ],
+  "dependencies": {
+    "buffer": "^6.0.3",
+    "process": "^0.11.10"
+  }
 }

@@ -1,44 +1,48 @@
-import { fileURLToPath, URL } from 'url';
-import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
-import environment from 'vite-plugin-environment';
-import dotenv from 'dotenv';
-
-dotenv.config({ path: '../../.env' });
+import react from '@vitejs/plugin-react';
+import path from 'path';
+import { nodePolyfills } from 'vite-plugin-node-polyfills';
 
 export default defineConfig({
+  plugins: [
+    react(),
+    nodePolyfills({
+      include: ['buffer', 'process'],
+      globals: {
+        Buffer: true,
+        global: true,
+        process: true
+      }
+    })
+  ],
+  root: 'src',
+  base: './',
+  publicDir: 'public',
   build: {
+    outDir: '../dist',
     emptyOutDir: true,
   },
-  optimizeDeps: {
-    esbuildOptions: {
-      define: {
-        global: "globalThis",
-      },
-    },
+  define: {
+    'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
+    'global': 'globalThis',
+  },
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src')
+    }
   },
   server: {
     proxy: {
-      "/api": {
-        target: "http://127.0.0.1:4943",
+      '/api': {
+        target: 'http://127.0.0.1:4943',
         changeOrigin: true,
-      },
+        secure: false,
+      }
     },
-  },
-  plugins: [
-    react(),
-    environment("all", { prefix: "CANISTER_" }),
-    environment("all", { prefix: "DFX_" }),
-  ],
-  resolve: {
-    alias: [
-      {
-        find: "declarations",
-        replacement: fileURLToPath(
-          new URL("../declarations", import.meta.url)
-        ),
-      },
-    ],
-    dedupe: ['@dfinity/agent'],
-  },
+    headers: {
+      'Cross-Origin-Opener-Policy': 'same-origin',
+      'Cross-Origin-Embedder-Policy': 'require-corp',
+      'Content-Security-Policy': "connect-src 'self' https://ic0.app https://*.ic0.app https://icp0.io https://*.icp0.io https://icp-api.io",
+    }
+  }
 });

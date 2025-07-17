@@ -1,0 +1,4 @@
+[dependencies]
+base = "0.13.4"
+serde = "3.2.2"
+cbor = "1.0.0"
