@@ -7,7 +7,7 @@ import Cycles "mo:base/ExperimentalCycles";
 
 actor Chatbot {
     // Hugging Face API Key
-    private let HF_API_KEY = "";
+    private let HF_API_KEY = "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";
 
     // Model names
     private let MATH_MODEL = "mrm8488/t5-base-finetuned-question-generation-ap";
